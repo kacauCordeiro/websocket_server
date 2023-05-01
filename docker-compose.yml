@@ -1,0 +1,32 @@
+
+version: '3.4'
+services:
+  websocket:
+    build: ./
+    ports:
+      - "8000:8000"
+    networks: 
+      - app_network
+    command: ["python", "./websocket/server.py"]
+
+  api:
+    build: ./
+    image: fastapi
+    command: ["uvicorn", "api.main:app", "--host=0.0.0.0" , "--reload" , "--port", "8080"]
+    ports:
+      - 8080:8080
+    volumes:
+      - ${PWD}/:/app
+      - /etc/localtime:/etc/localtime
+    depends_on:
+      - websocket
+    links: 
+      - websocket
+    networks: 
+      - app_network
+volumes:
+  db-data:
+    driver: local
+networks:
+  app_network:
+    external: true
