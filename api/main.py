@@ -52,7 +52,7 @@ async def get():
 
 @app.post("/send_message")
 async def send_message(message: MessagePydantic):
-    async with connect("ws://websocket_server-websocket-1:8000") as websocket:
+    async with connect("ws://websocket:8080/ws") as websocket:
         await websocket.send(f"{message}")
         print(f"Received: {message}")
         await websocket.recv()

@@ -8,6 +8,7 @@ FROM requirements as final
 
 COPY ./api /app/api
 COPY ./websocket /app/websocket
+COPY ./service /app/service
 COPY ./setup.py /app 
 
 WORKDIR /app

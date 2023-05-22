@@ -4,3 +4,4 @@ websockets==10.0
 rel
 websocket
 websocket-client
+schedule
