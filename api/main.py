@@ -55,8 +55,9 @@ async def send_message(message: MessagePydantic):
     async with connect("ws://websocket:8080/ws") as websocket:
         await websocket.send(f"{message}")
         print(f"Received: {message}")
-        await websocket.recv()
-    return f"{message.message}"
+        # websocket.recv()
+        await websocket.close()
+        return f"{message.message}"
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):

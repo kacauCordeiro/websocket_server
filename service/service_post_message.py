@@ -1,7 +1,9 @@
 import asyncio
 import random
 import time
-from websockets.client import connect
+import json
+import websockets
+import time
 
 
 lista_json = [
@@ -53,15 +55,14 @@ lista_json = [
 ]
 
 async def send_message():
-    
-    async with connect("ws://websocket:8080/ws") as websocket:
-        while True:
-            message = random.choice(lista_json)
-            await websocket.send(f"{message}")
-            print(f"Received: {message}")
-            await websocket.recv()
-            websocket.close()
-            await asyncio.sleep(10)
+    message = dict(random.choice(lista_json))
+    async with websockets.connect("ws://websocket:8080/ws") as websocket:
+        await websocket.send(json.dumps(message))
+        print(f"Received: {message}")
+        await asyncio.sleep(10)
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(send_message())
+async def main():
+    while True:
+        await send_message()
+
+asyncio.run(main())
